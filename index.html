@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Casa Del Camba Chile — Menú de comida rica y variada. Platos principales, acompañamientos y cocina oriental. ¡Pide en línea!">
+  <meta name="keywords" content="Casa Del Camba Chile, comida, menú, hamburguesas, fajitas, ramen, chorrillana, lomo, churrasco">
+  <meta name="author" content="Casa Del Camba Chile">
+  <title>Casa Del Camba Chile 🌿 — Menú Online</title>
+  <link rel="icon" href="images/logo.jpeg">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ═══════════ NAVBAR ═══════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#" class="navbar__logo" id="logo-link">
+        <img src="images/logo.jpeg" alt="Casa Del Camba Chile" class="navbar__logo-img" id="navbar-logo-img">
+        <span class="navbar__logo-text">
+          Casa Del Camba
+          <small>Chile</small>
+        </span>
+      </a>
+      <div class="navbar__actions">
+        <div class="search-bar" id="search-bar">
+          <span class="search-bar__icon">🔍</span>
+          <input type="search" class="search-bar__input" id="search-input" placeholder="Buscar platos..." maxlength="100" autocomplete="off" aria-label="Buscar platos en el menú">
+        </div>
+        <button class="cart-toggle" id="cart-toggle" aria-label="Abrir carrito de compras">
+          🛒
+          <span class="cart-toggle__badge" id="cart-badge" data-count="0"></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════ HERO ═══════════ -->
+  <header class="hero" id="hero">
+    <div class="container">
+      <!-- Logo + nombre juntos -->
+      <div class="hero__top">
+        <div class="hero__logo-wrap">
+          <img src="images/logo.jpeg" alt="Casa Del Camba Chile" class="hero__logo" id="hero-logo">
+        </div>
+        <div class="hero__heading">
+          <h1>Casa Del Camba Chile</h1>
+          <p>Sabor casero con el alma latina 🌿</p>
+        </div>
+      </div>
+
+      <p class="hero__subtitle">Platos ricos, raciones generosas y precios para todos</p>
+
+      <!-- Stats del local -->
+      <div class="hero__stats">
+        <div class="hero__stat">
+          <span class="hero__stat-num">26</span>
+          <span class="hero__stat-label">Platos en carta</span>
+        </div>
+        <div class="hero__stat">
+          <span class="hero__stat-num">$2.000</span>
+          <span class="hero__stat-label">Desde</span>
+        </div>
+        <div class="hero__stat">
+          <span class="hero__stat-num">3</span>
+          <span class="hero__stat-label">Categorías</span>
+        </div>
+        <div class="hero__stat">
+          <span class="hero__stat-num">30'</span>
+          <span class="hero__stat-label">Despacho aprox.</span>
+        </div>
+      </div>
+
+      <!-- Botones CTA -->
+      <div class="hero__cta-row">
+        <button class="hero__cta hero__cta--primary" onclick="document.getElementById('menu-section').scrollIntoView({behavior:'smooth'})">🍽️ Ver Menú</button>
+        <a href="https://wa.me/56912345678" target="_blank" rel="noopener" class="hero__cta hero__cta--outline">💬 WhatsApp</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════ MENÚ ═══════════ -->
+  <main>
+    <section class="menu-section" id="menu-section">
+      <div class="container">
+        <header class="menu-header">
+          <span class="menu-header__subtitle">Tradición en cada plato</span>
+          <h2 class="menu-section__title">Nuestra Carta</h2>
+          <p class="menu-section__desc">Raciones generosas y sabor casero preparadas al momento</p>
+        </header>
+        <div class="categories" id="categories" role="tablist"></div>
+        <div class="products-grid" id="products-grid"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════ CART DRAWER ═══════════ -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <aside class="cart-drawer" id="cart-drawer" role="dialog" aria-label="Carrito de compras">
+    <div class="cart-drawer__header">
+      <h2 class="cart-drawer__title">🛒 Mi Pedido</h2>
+      <button class="cart-drawer__close" id="cart-close" aria-label="Cerrar carrito">&times;</button>
+    </div>
+    <div class="cart-drawer__items" id="cart-items"></div>
+    <div class="cart-drawer__footer">
+      <div class="cart-total">
+        <span class="cart-total__label">Total:</span>
+        <span class="cart-total__value" id="cart-total-value">$0</span>
+      </div>
+      <button class="btn-checkout" id="btn-checkout" disabled>
+        <span>Realizar Pedido</span><span>→</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ═══════════ CHECKOUT MODAL ═══════════ -->
+  <div class="modal-overlay" id="checkout-modal" role="dialog">
+    <div class="modal modal--checkout">
+      <div class="modal__header">
+        <h2 class="modal__title">📋 Confirmar Pedido</h2>
+        <button class="modal__close" id="modal-close">&times;</button>
+      </div>
+
+      <form id="order-form" novalidate>
+        <!-- Datos personales -->
+        <div class="checkout-section">
+          <h3 class="checkout-section__title">👤 Datos Personales</h3>
+          <div class="form-group">
+            <label for="order-name">Nombre completo *</label>
+            <input type="text" id="order-name" name="name" required minlength="2" maxlength="80" placeholder="Tu nombre" autocomplete="name">
+            <div class="error-msg" id="order-name-error"></div>
+          </div>
+          <div class="form-group">
+            <label for="order-email">Correo electrónico *</label>
+            <input type="email" id="order-email" name="email" required maxlength="120" placeholder="tu@email.com" autocomplete="email">
+            <div class="error-msg" id="order-email-error"></div>
+          </div>
+          <div class="form-group">
+            <label for="order-comment">Comentarios (opcional)</label>
+            <textarea id="order-comment" name="comment" maxlength="500" rows="2" placeholder="Sin cebolla, extra salsa..."></textarea>
+            <div class="error-msg" id="order-comment-error"></div>
+          </div>
+        </div>
+
+        <!-- Tipo de entrega -->
+        <div class="checkout-section">
+          <h3 class="checkout-section__title">📦 Tipo de Entrega</h3>
+          <div class="payment-options">
+            <label class="payment-option">
+              <input type="radio" name="delivery-type-checkout" value="pickup" checked>
+              <span class="payment-option__card">
+                <span class="payment-option__icon">🏠</span>
+                <span class="payment-option__label">Retiro en Local</span>
+                <span class="payment-option__desc">Gratis</span>
+              </span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="delivery-type-checkout" value="delivery">
+              <span class="payment-option__card">
+                <span class="payment-option__icon">🚗</span>
+                <span class="payment-option__label">Despacho a Domicilio</span>
+                <span class="payment-option__desc">$2.500 — 30-45 min</span>
+              </span>
+            </label>
+          </div>
+          <div class="form-group" id="address-group" style="display:none;margin-top:1rem">
+            <label for="order-address">Dirección de despacho *</label>
+            <input type="text" id="order-address" name="address" maxlength="200" placeholder="Calle, número, comuna">
+            <div class="error-msg" id="order-address-error"></div>
+          </div>
+        </div>
+
+        <!-- Método de pago -->
+        <div class="checkout-section">
+          <h3 class="checkout-section__title">💳 Método de Pago</h3>
+          <div class="payment-options">
+            <label class="payment-option">
+              <input type="radio" name="payment-method" value="card" checked>
+              <span class="payment-option__card">
+                <span class="payment-option__icon">💳</span>
+                <span class="payment-option__label">Tarjeta de Crédito/Débito</span>
+                <span class="payment-option__desc">Visa, Mastercard, Redcompra</span>
+              </span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="payment-method" value="transfer">
+              <span class="payment-option__card">
+                <span class="payment-option__icon">🏦</span>
+                <span class="payment-option__label">Transferencia Bancaria</span>
+                <span class="payment-option__desc">Banco Estado, BCI</span>
+              </span>
+            </label>
+            <label class="payment-option">
+              <input type="radio" name="payment-method" value="cash">
+              <span class="payment-option__card">
+                <span class="payment-option__icon">💵</span>
+                <span class="payment-option__label">Efectivo</span>
+                <span class="payment-option__desc">Pago al momento de entrega</span>
+              </span>
+            </label>
+          </div>
+
+          <div id="card-fields" class="card-fields">
+            <div class="form-group">
+              <label for="card-number">Número de tarjeta</label>
+              <input type="text" id="card-number" maxlength="19" placeholder="1234 5678 9012 3456" autocomplete="cc-number">
+              <div class="error-msg"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="card-expiry">Vencimiento</label>
+                <input type="text" id="card-expiry" maxlength="5" placeholder="MM/AA" autocomplete="cc-exp">
+                <div class="error-msg"></div>
+              </div>
+              <div class="form-group">
+                <label for="card-cvv">CVV</label>
+                <input type="text" id="card-cvv" maxlength="4" placeholder="123" autocomplete="cc-csc">
+                <div class="error-msg"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="transfer-info" class="payment-info" style="display:none">
+            <div class="payment-info__card">
+              <p><strong>🏦 Datos de Transferencia:</strong></p>
+              <p>Banco Estado — Cuenta Corriente</p>
+              <p>N° Cuenta: 123456789</p>
+              <p>Email: pagos@casadelcamba.cl</p>
+            </div>
+          </div>
+
+          <div id="cash-info" class="payment-info" style="display:none">
+            <div class="payment-info__card">
+              <p><strong>💵 Pago en Efectivo:</strong></p>
+              <p>Paga al momento de recibir tu pedido.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Total -->
+        <div class="checkout-total-section">
+          <span class="checkout-total-label">Total a Pagar:</span>
+          <span class="checkout-total-value" id="checkout-total">$0</span>
+        </div>
+
+        <button type="submit" class="btn-checkout" id="btn-submit-order">
+          <span>✅ Confirmar y Pagar</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══════════ FOOTER PROFESIONAL ═══════════ -->
+  <footer class="site-footer" id="footer">
+    <div class="container">
+
+      <!-- WhatsApp CTA Banner -->
+      <div class="footer-cta">
+        <div class="footer-cta__text">
+          <strong>¿Listo para pedir? 🌿</strong>
+          <span>Escríbenos por WhatsApp y te atendemos al instante</span>
+        </div>
+        <a href="https://wa.me/56912345678" target="_blank" rel="noopener" class="footer-cta__btn" id="footer-whatsapp-cta">💬 Pedir por WhatsApp</a>
+      </div>
+
+      <div class="footer-grid">
+        <!-- Col 1: Marca -->
+        <div class="footer-col">
+          <div class="footer-brand">
+            <img src="images/logo.jpeg" alt="Logo" class="footer-brand__logo">
+            <span class="footer-brand__name">Casa Del Camba Chile</span>
+          </div>
+          <p class="footer-col__text">Comida con sabor casero y alma latina. Raciones generosas, precios accesibles y atención de calidad. ¡Te esperamos!</p>
+          <div class="footer-social">
+            <a href="https://facebook.com" target="_blank" rel="noopener" class="footer-social__link" title="Facebook" id="footer-facebook">📘</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener" class="footer-social__link" title="Instagram" id="footer-instagram">📸</a>
+            <a href="https://tiktok.com" target="_blank" rel="noopener" class="footer-social__link" title="TikTok" id="footer-tiktok">🎵</a>
+            <a href="https://wa.me/56912345678" target="_blank" rel="noopener" class="footer-social__link" title="WhatsApp" id="footer-whatsapp">💬</a>
+          </div>
+        </div>
+
+        <!-- Col 2: Menú rápido -->
+        <div class="footer-col">
+          <h4 class="footer-col__title">Categorías</h4>
+          <ul class="footer-links">
+            <li><a href="#menu-section" class="footer-links__item" id="footer-cat-principal">🍽️ Platos Principales</a></li>
+            <li><a href="#menu-section" class="footer-links__item" id="footer-cat-acomp">🍟 Acompañamientos</a></li>
+            <li><a href="#menu-section" class="footer-links__item" id="footer-cat-oriental">🥢 Cocina Oriental</a></li>
+            <li><a href="#hero" class="footer-links__item" id="footer-nav-inicio">🏠 Inicio</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Contacto -->
+        <div class="footer-col">
+          <h4 class="footer-col__title">Contáctanos</h4>
+          <ul class="footer-links">
+            <li><a href="tel:+56912345678" class="footer-links__item" id="footer-phone">📞 +56 9 1234 5678</a></li>
+            <li><a href="mailto:hola@casadelcamba.cl" class="footer-links__item" id="footer-email">📧 hola@casadelcamba.cl</a></li>
+            <li><a href="https://maps.google.com" target="_blank" rel="noopener" class="footer-links__item" id="footer-address">📍 Santiago, Chile</a></li>
+            <li><a href="https://wa.me/56912345678" target="_blank" rel="noopener" class="footer-links__item" id="footer-wa-text">💬 WhatsApp directo</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Horario + pagos -->
+        <div class="footer-col">
+          <h4 class="footer-col__title">Horarios</h4>
+          <ul class="footer-schedule">
+            <li class="footer-schedule__item"><span>Lun — Vie</span><span>12:00 — 22:00</span></li>
+            <li class="footer-schedule__item"><span>Sábado</span><span>12:00 — 23:00</span></li>
+            <li class="footer-schedule__item"><span>Domingo</span><span>12:00 — 21:00</span></li>
+          </ul>
+          <h4 class="footer-col__title" style="margin-top:1.2rem">Métodos de Pago</h4>
+          <div class="footer-payment-methods">
+            <span class="footer-payment-badge">💳 Visa</span>
+            <span class="footer-payment-badge">💳 Mastercard</span>
+            <span class="footer-payment-badge">🏦 Transferencia</span>
+            <span class="footer-payment-badge">💵 Efectivo</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="footer-bottom">
+        <p>🌿 Casa Del Camba Chile &copy; 2026 — Todos los derechos reservados</p>
+        <p class="footer-bottom__links">
+          <a href="#" id="footer-legal-privacy">Privacidad</a>
+          <span>|</span>
+          <a href="#" id="footer-legal-terms">Términos</a>
+          <span>|</span>
+          <a href="https://wa.me/56912345678" target="_blank" rel="noopener" id="footer-legal-wa">WhatsApp</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Botón volver arriba -->
+  <button class="back-to-top" id="back-to-top" aria-label="Volver al inicio" title="Volver arriba">&#8679;</button>
+
+  <script src="js/security.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
